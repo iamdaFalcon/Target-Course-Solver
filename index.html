@@ -104,7 +104,7 @@
           placeholder="0 to 360"
           min="0"
           max="360"
-          step="0.1"
+          autofocus
         />
       </div>
 
@@ -116,7 +116,6 @@
           placeholder="0 to 360"
           min="0"
           max="360"
-          step="0.1"
         />
       </div>
 
@@ -126,9 +125,8 @@
           type="number"
           id="aob"
           placeholder="-180 to 180"
-          min="0"
+          min="-180"
           max="180"
-          step="0.1"
         />
       </div>
 
@@ -162,10 +160,25 @@
         result.innerText = targetCourse.toFixed(1) + "°";
       }
 
+      const inputs = Array.from(document.querySelectorAll("input"));
+
+      inputs.forEach((input, index) => {
+        input.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+
+            const nextIndex = (index + 1) % inputs.length;
+            inputs[nextIndex].focus();
+            inputs[nextIndex].select();
+          }
+        });
+      });
+
       document.querySelectorAll("input").forEach((input) => {
         input.addEventListener("input", calculate);
       });
     </script>
   </body>
 </html>
+
 
