@@ -150,12 +150,7 @@
           return;
         }
 
-        let trueBearing = (ownCourse + bearing) % 360;
-
-        let reciprocal =
-          trueBearing >= 180 ? trueBearing - 180 : trueBearing + 180;
-
-        let targetCourse = (reciprocal - aob + 360) % 360;
+        let targetCourse = (ownCourse + bearing + 180 - aob + 360) % 360;
 
         result.innerText = targetCourse.toFixed(1) + "°";
       }
@@ -180,5 +175,6 @@
     </script>
   </body>
 </html>
+
 
 
