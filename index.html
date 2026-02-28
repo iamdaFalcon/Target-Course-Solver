@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Target Course Solver</title>
+    <style>
+      :root {
+        --bg-color: #1a1a1a;
+        --panel-color: #2c2c2c;
+        --accent-color: #ff9f43;
+        --text-color: #e0e0e0;
+      }
+
+      body {
+        font-family: "Courier New", Courier, monospace;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      .calculator {
+        background-color: var(--panel-color);
+        padding: 2rem;
+        border-radius: 10px;
+        border: 2px solid #444;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        width: 350px;
+      }
+
+      h2 {
+        text-align: center;
+        color: var(--accent-color);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid #444;
+        padding-bottom: 10px;
+      }
+
+      .input-group {
+        margin-bottom: 15px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-size: 0.9rem;
+      }
+
+      input {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+        background: #111;
+        border: 1px solid #555;
+        color: var(--accent-color);
+        font-size: 1.1rem;
+        border-radius: 4px;
+        outline: none;
+      }
+
+      input:focus {
+        border-color: var(--accent-color);
+      }
+
+      .result-area {
+        margin-top: 25px;
+        padding: 15px;
+        background: #111;
+        border-radius: 4px;
+        text-align: center;
+        border: 1px dashed var(--accent-color);
+      }
+
+      .result-label {
+        font-size: 0.8rem;
+        color: #888;
+        margin-bottom: 5px;
+      }
+
+      #resultValue {
+        font-size: 2rem;
+        font-weight: bold;
+        color: var(--accent-color);
+        height: 2.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="calculator">
+      <h2>Target Course Solver</h2>
+
+      <div class="input-group">
+        <label>Your Course (°)</label>
+        <input
+          type="number"
+          id="ownCourse"
+          placeholder="0 to 360"
+          min="0"
+          max="360"
+          step="0.1"
+        />
+      </div>
+
+      <div class="input-group">
+        <label>Bearing to Target (°)</label>
+        <input
+          type="number"
+          id="bearing"
+          placeholder="0 to 360"
+          min="0"
+          max="360"
+          step="0.1"
+        />
+      </div>
+
+      <div class="input-group">
+        <label>AOB (Angle on Bow) (°)</label>
+        <input
+          type="number"
+          id="aob"
+          placeholder="-180 to 180"
+          min="0"
+          max="180"
+          step="0.1"
+        />
+      </div>
+
+      <div class="result-area">
+        <div class="result-label">TARGET TRUE COURSE</div>
+        <div id="resultValue">---</div>
+      </div>
+    </div>
+
+    <script>
+      function calculate() {
+        const ownCourse = parseFloat(
+          document.getElementById("ownCourse").value,
+        );
+        const bearing = parseFloat(document.getElementById("bearing").value);
+        const aob = parseFloat(document.getElementById("aob").value);
+        const result = document.getElementById("resultValue");
+
+        if (isNaN(ownCourse) || isNaN(bearing) || isNaN(aob)) {
+          result.innerText = "---";
+          return;
+        }
+
+        let trueBearing = (ownCourse + bearing) % 360;
+
+        let reciprocal =
+          trueBearing >= 180 ? trueBearing - 180 : trueBearing + 180;
+
+        let targetCourse = (reciprocal - aob + 360) % 360;
+
+        result.innerText = targetCourse.toFixed(1) + "°";
+      }
+
+      document.querySelectorAll("input").forEach((input) => {
+        input.addEventListener("input", calculate);
+      });
+    </script>
+  </body>
+</html>
